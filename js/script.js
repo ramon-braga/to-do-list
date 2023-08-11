@@ -1,4 +1,6 @@
-const todoList = [];
+const todoList = JSON.parse(localStorage.getItem('todoList')) || [];
+
+renderTodoList();
 
 function addTodo() {
     const inputElement = document.querySelector('.js-name-input');
@@ -18,6 +20,9 @@ function addTodo() {
     inputElement.value = '';
 
     renderTodoList();
+
+    // Whenever we update the todo list, save in localStorage.
+    saveToStorage();
 }
 
 function renderTodoList() {
@@ -33,9 +38,17 @@ function renderTodoList() {
         <button onclick="
             todoList.splice(${i}, 1);
             renderTodoList();
+
+            // Whenever we update the todo list, save in localStorage.
+            
+            saveToStorage();
         " class="delete-todo-button">Delete</button>
         `;
     }
 
     document.querySelector('.js-todo-list').innerHTML = todoListHTML;
+}
+
+function saveToStorage() {
+    localStorage.setItem('todoList', JSON.stringify(todoList));
 }
